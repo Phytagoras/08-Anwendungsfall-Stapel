@@ -8,7 +8,6 @@ public class Stack<ContentType>{
 
         public Node(ContentType pContent){
             content = pContent;
-            back = null;
             front = null;
         }
 
@@ -16,8 +15,8 @@ public class Stack<ContentType>{
             return content;
         }
 
-        public void setBack(Node newBack){
-            this.back = newBack;
+        public void setFront(Node newNode){
+            this.front = newNode;
         }
 
         public Node getFront(){
@@ -45,7 +44,7 @@ public class Stack<ContentType>{
             if(this.isEmpty()){
                 topEnd = newNode;
             }else{ //sonst...
-                topEnd.setBack(newNode);
+                newNode.setFront(topEnd);
                 topEnd = newNode;
             }
         }
@@ -56,6 +55,7 @@ public class Stack<ContentType>{
         }
     }
     public ContentType top(){
+        if(isEmpty()) return null;
         return topEnd.getContent();
     }
 }
