@@ -18,7 +18,7 @@ public class MainController {
      * Ein Objekt der Klasse MainController wird erstellt. Die Schüler beginnen mit dem Buchstaben A.
      * Zwei Stacks werden inistialisert.
      */
-    public MainController(){
+    public MainController() {
         pupilName = 'A';
         stackOfUncorrected = new Stack<>();
         stackOfCorrected = new Stack<>();
@@ -26,36 +26,22 @@ public class MainController {
     }
 
     /**
-     *
      * @return String-Array mit allen Informationen zu den unkorrigierten Klausuren.
      */
-    public String[] showUncorrectedExams(){
+    public String[] showUncorrectedExams() {
         //TODO: 05 - Bei einem Stack ist es unüblich, auf alle Daten innerhalb des Stacks zuzugreifen. Gerade das ist hier aber nötig! Hier muss mit einem "Trick" gearbeitet werden, ohne die Klasse Stack zu überarbeiten.
-        String[] output = new String[determineLenght(stackOfUncorrected)];
-        Stack<Exam> tmpStack = new Stack<>();
-        int counter = 0;
-        while(!stackOfUncorrected.isEmpty()){
-            tmpStack.push(stackOfUncorrected.top());
-            output[counter] = stackOfUncorrected.top().toString();
-            stackOfUncorrected.pop();
-            counter++;
-        }
-        while(!tmpStack.isEmpty()){
-            stackOfUncorrected.push(tmpStack.top());
-            tmpStack.pop();
-        }
-        return output;
+        return getStrings(stackOfUncorrected);
     }
 
     private int determineLenght(Stack<Exam> pStack) {
         Stack<Exam> tmpStack = new Stack<>();
         int counter = 0;
-        while(!pStack.isEmpty()){
+        while (!pStack.isEmpty()) {
             tmpStack.push(pStack.top());
             pStack.pop();
-            counter ++;
+            counter++;
         }
-        while(!tmpStack.isEmpty()){
+        while (!tmpStack.isEmpty()) {
             pStack.push(tmpStack.top());
             tmpStack.pop();
         }
@@ -63,33 +49,35 @@ public class MainController {
     }
 
     /**
-     *
      * @return Informationen zur Klausur, die aktuell korrigiert wird, sofern eine Klausur vorhanden ist.
      */
-    public String showCurrentCorrection(){
-        if(currentCorrection != null){
+    public String showCurrentCorrection() {
+        if (currentCorrection != null) {
             return currentCorrection.toString();
         }
         return "Aktuell keine Korrektur.";
     }
 
     /**
-     *
      * @return String-Array mit allen Informationen zu den korrigierten Klausuren.
      */
-    public String[] showCorrectedExams(){
+    public String[] showCorrectedExams() {
         //TODO: 08 - siehe die Methode showUncorrectedExams!
-        String[] output = new String[determineLenght(stackOfCorrected)];
+        return getStrings(stackOfCorrected);
+    }
+
+    private String[] getStrings(Stack<Exam> pStackOfCorrected) {
+        String[] output = new String[determineLenght(pStackOfCorrected)];
         Stack<Exam> tmpStack = new Stack<>();
         int counter = 0;
-        while(!stackOfCorrected.isEmpty()){
-            tmpStack.push(stackOfCorrected.top());
-            output[counter] = stackOfCorrected.top().toString();
-            stackOfCorrected.pop();
+        while (!pStackOfCorrected.isEmpty()) {
+            tmpStack.push(pStackOfCorrected.top());
+            output[counter] = pStackOfCorrected.top().toString();
+            pStackOfCorrected.pop();
             counter++;
         }
-        while(!tmpStack.isEmpty()){
-            stackOfCorrected.push(tmpStack.top());
+        while (!tmpStack.isEmpty()) {
+            pStackOfCorrected.push(tmpStack.top());
             tmpStack.pop();
         }
         return output;
@@ -97,9 +85,10 @@ public class MainController {
 
     /**
      * Eine neue Klausur wird auf den Stapel der unkorrigierten Klausuren gelegt.
+     *
      * @return Informationen zur neuen, unkorrigierten Klausur.
      */
-    public String addNewExam(){
+    public String addNewExam() {
         //TODO: 04 -  DONE - Hinzufügen von Objekten auf den Stack.
         Exam tmpElement = new Exam(String.valueOf(pupilName));
         stackOfUncorrected.push(tmpElement);
@@ -109,11 +98,12 @@ public class MainController {
 
     /**
      * Die oberste Klausur des unkorrigierten Stapels soll korrigiert werden, falls eine unkorrigierte vorhanden ist und gerade keine korrigiert wird.
+     *
      * @return true, falls keine Klausur gerade korrigiert wird und eine unkorrigierte Klausur vorahnden ist, sonst false.
      */
-    public boolean startCorrection(){
+    public boolean startCorrection() {
         //TODO: 06 - Entfernen des obersten Objekts eines Stack.
-        if(currentCorrection == null && !stackOfUncorrected.isEmpty()){
+        if (currentCorrection == null && !stackOfUncorrected.isEmpty()) {
             currentCorrection = stackOfUncorrected.top();
             stackOfUncorrected.pop();
             return true;
@@ -123,11 +113,12 @@ public class MainController {
 
     /**
      * Die aktuelle Klausur wurde fertig korrigiert und wird auf den Stapel der bereits korrigierten Klausuren gelegt.
+     *
      * @return Informationen zur korrigierten Klausur, falls vorhanden, sonst ein Hinweis, dass keine Klausur korrigiert wurde.
      */
-    public String endCorrection(){
+    public String endCorrection() {
         //TODO: 07 - Hinzufügen von Objekten auf den Stack.
-        if(currentCorrection != null){
+        if (currentCorrection != null) {
             stackOfCorrected.push(currentCorrection);
             currentCorrection = null;
             return stackOfCorrected.top().toString();
